@@ -1,3 +1,4 @@
+import json
 import urllib
 from flask import session, redirect, url_for, escape, request, render_template, make_response
 
@@ -46,8 +47,10 @@ def bin(name):
             base_url=request.scheme+'://'+request.host)
     else:
         db.create_request(bin, request)
-        resp = make_response("ok\n")
+        resp.headers['Content-Type'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.headers['Sponsored-By'] = "https://www.runscope.com"
+        resp = make_response(json.dumps(request))
         return resp
 
 
